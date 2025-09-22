@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Listing Bot - Cleepha</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            background: rgba(74, 144, 226, 0.1);
+            border: 1px solid rgba(74, 144, 226, 0.3);
+            border-radius: 10px;
+            padding: 12px 20px;
+            color: #4A90E2;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .back-btn:hover {
+            background: rgba(74, 144, 226, 0.2);
+            border-color: #4A90E2;
+            transform: translateY(-2px);
+        }
+        
+        .title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #4A90E2, #7B68EE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #888;
+            margin-bottom: 40px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .feature-card {
+            background: rgba(20, 20, 20, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(74, 144, 226, 0.3);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #4A90E2, #7B68EE);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #4A90E2;
+            margin-bottom: 15px;
+        }
+        
+        .feature-description {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .feature-list li {
+            color: #aaa;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .feature-list li:before {
+            content: "✓";
+            color: #4A90E2;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .cta-section {
+            text-align: center;
+            background: rgba(74, 144, 226, 0.1);
+            border: 1px solid rgba(74, 144, 226, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 60px;
+        }
+        
+        .cta-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #4A90E2;
+        }
+        
+        .cta-text {
+            font-size: 1.1rem;
+            color: #ccc;
+            margin-bottom: 30px;
+        }
+        
+        .contact-btn {
+            background: linear-gradient(45deg, #4A90E2, #7B68EE);
+            border: none;
+            border-radius: 12px;
+            padding: 15px 30px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+        }
+        
+        .contact-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .back-btn {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-bottom: 20px;
+                display: inline-block;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <a href="index.html" class="back-btn">← Back to Profile</a>
+        
+        <div class="header">
+            <h1 class="title">Comprehensive Discord Bot</h1>
+            <p class="subtitle">Full-featured Discord automation with account listings, ticket management, and more</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3 class="feature-title">Hypixel SkyBlock Account Listings</h3>
+                <p class="feature-description">Complete account marketplace with real-time Hypixel API integration for accurate statistics display.</p>
+                <ul class="feature-list">
+                    <li>Auto-fetch slayer levels, dungeons, skills from Hypixel API</li>
+                    <li>HOTM level, powder amounts, minion slots tracking</li>
+                    <li>Organized channel creation with buy/notification buttons</li>
+                    <li>SkyCrypt integration for networth and weight data</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎫</div>
+                <h3 class="feature-title">Advanced Ticket System</h3>
+                <p class="feature-description">Professional ticket management with claim/close functionality and transcript system.</p>
+                <ul class="feature-list">
+                    <li>Automatic ticket creation with buy buttons</li>
+                    <li>Staff claim and close with confirmation dialogs</li>
+                    <li>Save transcripts or close without saving options</li>
+                    <li>Auto-pin ticket messages for easy access</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3 class="feature-title">Auto-Close & Restore System</h3>
+                <p class="feature-description">Intelligent ticket auto-closing with message restoration and reopen functionality.</p>
+                <ul class="feature-list">
+                    <li>Auto-close tickets after inactivity periods</li>
+                    <li>Save all messages and restore with webhooks</li>
+                    <li>DM customers with reopen button when closed</li>
+                    <li>Perfect message recreation with avatars/usernames</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔔</div>
+                <h3 class="feature-title">Notification System</h3>
+                <p class="feature-description">Smart notification system for stock updates and new listings.</p>
+                <ul class="feature-list">
+                    <li>Coin stock restock notifications</li>
+                    <li>MFA account availability alerts</li>
+                    <li>New account listing notifications</li>
+                    <li>Toggle subscribe/unsubscribe system</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⭐</div>
+                <h3 class="feature-title">Reputation & Vouch System</h3>
+                <p class="feature-description">Automated reputation tracking with dynamic channel counters and role-based access.</p>
+                <ul class="feature-list">
+                    <li>Auto-detect mentions for vouch tracking</li>
+                    <li>Dynamic channel names with live counters</li>
+                    <li>Leaderboards and statistics commands</li>
+                    <li>Role-based access control for vouching</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <h3 class="feature-title">Stock Management</h3>
+                <p class="feature-description">Real-time stock tracking for coins and accounts with automatic panel updates.</p>
+                <ul class="feature-list">
+                    <li>Coin stock management commands</li>
+                    <li>Auto-update all ticket panels when stock changes</li>
+                    <li>Show/hide notification buttons based on stock</li>
+                    <li>Track panel locations for mass updates</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📋</div>
+                <h3 class="feature-title">Transcript System</h3>
+                <p class="feature-description">Comprehensive transcript saving with HTML formatting and automatic organization.</p>
+                <ul class="feature-list">
+                    <li>HTML transcript generation with styling</li>
+                    <li>Configurable transcript channels</li>
+                    <li>One-click transcript saving</li>
+                    <li>Message preservation with metadata</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎮</div>
+                <h3 class="feature-title">Sell Account System</h3>
+                <p class="feature-description">Complete account selling workflow with data validation and staff tools.</p>
+                <ul class="feature-list">
+                    <li>Modal forms for account details</li>
+                    <li>Integration with existing ticket system</li>
+                    <li>Staff management buttons</li>
+                    <li>Professional embed formatting</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="cta-section">
+            <h2 class="cta-title">Interested in This Bot?</h2>
+            <p class="cta-text">Contact me on Discord: <strong>cleepha</strong> (590201256769749004) to purchase this comprehensive Discord automation system.</p>
+        </div>
+    </div>
+    
+    <script>
+        // Create stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 150;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        createStars();
+        
+        // Smooth scroll for better UX
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
